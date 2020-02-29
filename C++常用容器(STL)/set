@@ -1,0 +1,37 @@
+#include<set>
+//set是一个集合，每个元素在集合中只出现一次。set不具有数组性质，不支持[]操作符，当元素下标需要确定时不应使用set
+
+//初始化
+set<int> s1;
+set<char> s2;
+
+//插入元素
+s1.insert(2);
+s1.insert(1);
+s2.insert('2');
+s2.insert('c');
+s2.insert('a');
+
+//通过制定键值删除元素
+s1.erase(2);
+s2.erase('c');
+
+//当数据存入set中后，set会自动对元素进行排序；如s1遍历结果为：1，2.遍历set可以用迭代器，也可以用auto关键字
+set<char>::iterator it;
+for (it = s2.begin(); it != s2.end(); it++) {
+    cout << *it << endl;
+}
+
+for (auto it : s1) {
+    cout << it << endl;
+}
+
+//其他常见
+s1.begin();//返回指向第一个元素的迭代器
+s1.end();//返回指向最后一个元素之后的迭代器，实际为NULL
+s1.clear();//清除所有元素
+s1.count(2);//如果set中有实参中的元素则返回1，反之返回0
+s1.empty();//如果集合为空则返回true
+s1.size();//返回集合大小
+s2.find('a');//如果找到该元素则返回对应的迭代器，否则返回end()
+s2.swap();//用于交换两个相同数据类型的set的内容
