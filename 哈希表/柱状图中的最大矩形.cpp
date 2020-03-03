@@ -42,3 +42,25 @@ int largestRectangleArea(vector<int>& heights) {
 //单调栈：假设从数组heights的每一个位开始寻找，该矩形的右边界对应的hrights[j]一定小于当前heights[i]，
 //在遇到这样的“障碍”之前，应该持续向右递增下标，这样就形成了一个单调递增的栈（栈内单增，遇到新元素判断其于栈顶元素的大小关系以调整栈结构）。
 //单调栈特别适合边界存在大小限制的问题
+int largestRectangleArea(vector<int>& heights) {
+    vector<int> stack;
+    stack.push_back(-1);
+    int res = 0;
+    for (int i = 0; i < heights.size(); i++) {
+        while (stack.back() != -1 && heights[stack.back()] >= heights[i]) {
+            res = max(res, heights[stack.back()] * (i - stack[stack.size() - 2] - 1));
+            stack.pop_back();
+        }
+        stack.push_back(i);
+    }
+    int rightLimit = heights.size();
+    while (stack.back() != -1) {
+        res = max(res, heights[stack.back()] * (rightLimit - stack[stack.size() - 2] - 1));
+        stack.pop_back();
+    }
+    return res;
+}
+/*
+分解求面积的问题，就是要获得长和宽；宽是当前元素的值，而长就要由左右边界确定，左右边界是在heights中第一个小于当前值的元素的下标。
+用单调递增栈来辅助，递增意味着栈中当前元素的左边界就是相邻左元素，而右边界就是在遍历过程中遇到的第一个小于当前值的元素的下标。
+*/
