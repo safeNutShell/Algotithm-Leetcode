@@ -3,3 +3,17 @@
 //注意你不能在买入股票前卖出股票。
 
 //解：
+int maxProfit(vector<int>& prices) {
+    int minPrice=INT_MAX;
+    int maxPro=0;
+    for(int i=0;i<prices.size();i++){
+        if(prices[i]<minPrice)
+            minPrice=prices[i];
+        if(prices[i]-minPrice>maxPro)
+            maxPro=prices[i]-minPrice;
+    }
+    return maxPro;
+}
+/*
+累了3.6号写
+*/
