@@ -17,21 +17,28 @@ int findDuplicate(vector<int>& nums) {
     return 0;
 }
 
-int findDuplicate(vector<int>& nums) {
-    int slow=0;
-    int fast=0;
-    while(1){
-        slow=nums[slow];
-        fast=nums[nums[fast]];
-        if(slow==fast)
-            break;
+    int findDuplicate(vector<int>& nums) {
+        int slow=0;
+        int fast=0;
+        while(1){
+            slow=nums[slow];
+            fast=nums[nums[fast]];
+            if(slow==fast)
+                break;
+        }//先定位到环中的某一个元素
+        
+        int ptr=0;
+        while(nums[slow]!=nums[ptr]){
+            slow=nums[slow];
+            ptr=nums[ptr];
+        }//环内元素/链表首位元素同时开始遍历，定位入口点
+        return nums[ptr];
     }
 
-    int ptr1=slow;
-    int ptr2=0;
-    while(ptr1!=ptr2){
-        ptr1=nums[ptr1];
-        ptr2=nums[ptr2];
-    }
-    return nums[ptr1];
-}
+/*
+最简单的利用set存储已经出现的数字，对接下来的数字进行匹配
+更高效地，当数组中有两个以上重复的数字时，意味着顺着数组的下标-value遍历，会出现环
+那么此题就变成了如何检索链表中的环以及找出环的入口
+典型做法是利用快慢指针
+合理性？为什么一定能相遇
+*/
