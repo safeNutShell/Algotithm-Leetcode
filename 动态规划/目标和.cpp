@@ -4,31 +4,29 @@
 */
 
 int findTargetSumWays(vector<int>& nums, int S) {
-	int sum = accumulate(nums.begin(), nums.end(), 0);
-	if (S > sum || S < -sum) return 0;
-	//注意还有负的半边
-	int column = 2 * sum + 1;
-	int row = nums.size();
-	int** dp = new int*[row];
-	for (int i = 0; i < row; i++) dp[i] = new int[column];
-	for (int i = 0; i < row; i++)
-		for (int j = 0; j < column; j++)
+	int n = nums.size();
+	int sum = 0;
+	for (int i = 0; i < n; i++) {
+		sum += nums[i];
+	}
+	if (abs(S) > abs(sum)) return 0;
+	int** dp = new int* [nums.size()];
+	for (int i = 0; i < nums.size(); i++) dp[i] = new int[2 * sum + 1];
+	for (int i = 0; i < nums.size(); i++)
+		for (int j = 0; j < 2 * sum + 1; j++)
 			dp[i][j] = 0;
-	//初始化
 	if (nums[0] == 0)
 		dp[0][sum] = 2;
 	else {
 		dp[0][sum + nums[0]] = 1;
 		dp[0][sum - nums[0]] = 1;
 	}
-	for (int i = 1; i < row; i++) {
-		for (int j = 0; j < column; j++) {
-			if (j - nums[i] >= 0)
-				dp[i][j] += dp[i - 1][j - nums[i]];
-			if (j + nums[i] <= column)
-				dp[i][j] += dp[i - 1][j + nums[i]];
-			
+	for (int i = 1; i < nums.size(); i++) {
+		for (int j = 0; j < 2 * sum + 1; j++) {
+			int l = (j - nums[i]) >= 0 ? j - nums[i] : 0;
+			int r = (j + nums[i]) < (2 * sum + 1) ? j + nums[i] : 2 * sum;
+			dp[i][j] = dp[i - 1][l] + dp[i - 1][r];
 		}
 	}
-	return dp[row - 1][sum + S];
+	return dp[n - 1][sum + S];
 }
